@@ -1,5 +1,5 @@
 import React from 'react';
-import { Difficulty } from '../types';
+import { Difficulty, GameState } from '../types';
 import { cardDatabase } from '../data';
 
 interface SetupScreenProps {
@@ -13,6 +13,8 @@ interface SetupScreenProps {
   setPlayerNames: (names: string[]) => void;
   startGame: () => void;
   uniqueCategories: string[];
+  appLogo: string;
+  setGameState: (state: GameState) => void;
 }
 
 export const SetupScreen: React.FC<SetupScreenProps> = ({
@@ -25,26 +27,38 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
   playerNames,
   setPlayerNames,
   startGame,
-  uniqueCategories
+  uniqueCategories,
+  appLogo,
+  setGameState
 }) => {
   return (
     <div className="bg-slate-800 p-6 rounded-2xl shadow-2xl w-full max-w-md">
+      <div className="flex justify-between items-center mb-6">
+        <button 
+          onClick={() => setGameState('home')}
+          className="text-slate-400 hover:text-white transition-colors flex items-center gap-2"
+        >
+          <span>←</span> Voltar
+        </button>
+        <h2 className="text-2xl font-bold text-primary-400 font-serif">Jogar em Grupo</h2>
+      </div>
+
       <div className="flex justify-center mb-6">
         <img 
-          src="/logo.jpg" 
+          src={appLogo} 
           alt="Logótipo Jogo das Pistas Gospel" 
-          className="w-64 h-auto rounded-xl drop-shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-transform hover:scale-105"
+          className="w-48 h-auto rounded-xl drop-shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-transform hover:scale-105"
         />
       </div>
-      
+
       <div className="mb-6">
-        <label className="block text-slate-300 mb-2 font-medium">Quantidade de Jogadores: <span className="font-bold text-amber-400">{numPlayers}</span></label>
+        <label className="block text-slate-300 mb-2 font-medium">Quantidade de Jogadores: <span className="font-bold text-primary-400">{numPlayers}</span></label>
         <input 
           type="range" 
           min="1" max="8" 
           value={numPlayers} 
           onChange={(e) => setNumPlayers(parseInt(e.target.value))}
-          className="w-full accent-amber-500"
+          className="w-full accent-primary-500"
         />
       </div>
 
@@ -53,7 +67,7 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
         <select 
           value={difficulty}
           onChange={(e) => setDifficulty(e.target.value as Difficulty)}
-          className="w-full bg-slate-700 text-white border border-slate-600 rounded-lg p-3 outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all cursor-pointer"
+          className="w-full bg-slate-700 text-white border border-slate-600 rounded-lg p-3 outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-all cursor-pointer"
         >
           <option value="easy">🟢 Fácil (45 seg por dica)</option>
           <option value="medium">🟡 Médio (30 seg por dica)</option>
@@ -66,7 +80,7 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
         <select 
           value={gameMode}
           onChange={(e) => setGameMode(e.target.value)}
-          className="w-full bg-slate-700 text-white border border-slate-600 rounded-lg p-3 outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all cursor-pointer"
+          className="w-full bg-slate-700 text-white border border-slate-600 rounded-lg p-3 outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-all cursor-pointer"
         >
           <option value="mixed">🔀 Mesclado (Todas as Categorias)</option>
           {uniqueCategories.map(cat => (
@@ -75,7 +89,7 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
         </select>
         
         {gameMode !== 'mixed' && Math.floor(cardDatabase.filter(c => c.category === gameMode).length / numPlayers) < 6 && (
-          <p className="text-xs text-amber-400 mt-2 bg-amber-900/30 p-2 rounded border border-amber-900/50">
+          <p className="text-xs text-primary-400 mt-2 bg-primary-900/30 p-2 rounded border border-primary-900/50">
             Aviso: O jogo terá um limite de {Math.floor(cardDatabase.filter(c => c.category === gameMode).length / numPlayers)} rodada(s) para {numPlayers} jogador(es) devido à quantidade de cartas desta categoria.
           </p>
         )}
@@ -92,7 +106,7 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
                 newNames[index] = e.target.value;
                 setPlayerNames(newNames);
               }}
-              className="bg-slate-700 text-white border border-slate-600 rounded-lg p-3 outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all"
+              className="bg-slate-700 text-white border border-slate-600 rounded-lg p-3 outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-all"
               placeholder={`Nome do Jogador ${index + 1}`}
               maxLength={15}
             />
@@ -102,7 +116,7 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({
 
       <button 
         onClick={startGame}
-        className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold text-lg py-4 rounded-xl transition-transform active:scale-95 shadow-lg"
+        className="w-full bg-primary-500 hover:bg-primary-600 text-slate-900 font-bold text-lg py-4 rounded-xl transition-transform active:scale-95 shadow-lg"
       >
         Começar Jogo
       </button>

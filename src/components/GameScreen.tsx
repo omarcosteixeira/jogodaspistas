@@ -15,6 +15,7 @@ interface GameScreenProps {
   totalRounds: number;
   difficulty: Difficulty;
   setGameState: (state: GameState) => void;
+  appLogo: string;
 }
 
 const pointsArray = [20, 15, 10, 5, 1];
@@ -31,7 +32,8 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   setCurrentRound,
   totalRounds,
   difficulty,
-  setGameState
+  setGameState,
+  appLogo
 }) => {
   const [currentClueIndex, setCurrentClueIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(timeLimits[difficulty]);
@@ -83,9 +85,13 @@ export const GameScreen: React.FC<GameScreenProps> = ({
       const points = pointsArray[currentClueIndex];
       setPointsEarned(points);
       setLastAction('correct');
-      setPlayers(prev => prev.map((p, i) => 
-        i === currentPlayerIndex ? { ...p, score: p.score + points } : p
-      ));
+      setPlayers(prev => prev.map((p, i) => {
+        if (i === currentPlayerIndex) {
+          const newCluesGuessedAt = p.cluesGuessedAt ? [...p.cluesGuessedAt, currentClueIndex] : [currentClueIndex];
+          return { ...p, score: p.score + points, cluesGuessedAt: newCluesGuessedAt };
+        }
+        return p;
+      }));
       playCorrectSound();
       setShowAnswerModal(true);
     } else {
@@ -172,23 +178,23 @@ export const GameScreen: React.FC<GameScreenProps> = ({
       <header className="bg-slate-800 p-4 shadow-md flex justify-between items-center w-full">
         <div className="flex items-center gap-3">
           <img 
-            src="/logo.jpg" 
+            src={appLogo} 
             alt="Logo Mini" 
-            className="w-12 h-12 rounded-full object-cover border-2 border-amber-500/50"
+            className="w-12 h-12 rounded-full object-cover border-2 border-primary-500/50"
           />
           <div>
-            <h1 className="text-lg font-bold text-amber-400 font-serif">Jogo das Pistas</h1>
+            <h1 className="text-lg font-bold text-primary-400 font-serif">Jogo das Pistas</h1>
             <p className="text-xs text-slate-400">Rodada {currentRound} de {totalRounds}</p>
           </div>
         </div>
         <div className="text-right">
           <p className="text-sm text-slate-300">Jogando agora:</p>
-          <p className="font-bold text-amber-400 text-lg truncate max-w-[120px]">{currentPlayer?.name}</p>
+          <p className="font-bold text-primary-400 text-lg truncate max-w-[120px]">{currentPlayer?.name}</p>
         </div>
       </header>
 
       <main className="flex-1 flex flex-col items-center justify-center p-4 w-full">
-        <div className="bg-slate-800 rounded-2xl shadow-xl w-full max-w-md p-6 relative border-t-4 border-amber-500">
+        <div className="bg-slate-800 rounded-2xl shadow-xl w-full max-w-md p-6 relative border-t-4 border-primary-500">
           
           <div className="flex justify-between items-start mb-6">
             <div>
@@ -197,7 +203,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
               </span>
               <p className="text-slate-400 text-sm mt-1">Dica {currentClueIndex + 1} de 5</p>
             </div>
-            <div className={`flex items-center justify-center w-14 h-14 rounded-full border-4 ${timeLeft <= 5 ? 'border-red-500 text-red-500 animate-pulse' : 'border-amber-500 text-amber-500'}`}>
+            <div className={`flex items-center justify-center w-14 h-14 rounded-full border-4 ${timeLeft <= 5 ? 'border-red-500 text-red-500 animate-pulse' : 'border-primary-500 text-primary-500'}`}>
               <span className="text-xl font-bold font-mono">{timeLeft}</span>
             </div>
           </div>
@@ -210,7 +216,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
 
           <div className="text-center mb-4">
             <p className="text-sm text-slate-400">
-              Valor desta pista: <span className="font-bold text-amber-400">{pointsArray[currentClueIndex]} pontos</span>
+              Valor desta pista: <span className="font-bold text-primary-400">{pointsArray[currentClueIndex]} pontos</span>
             </p>
           </div>
 
@@ -218,7 +224,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
             <div className="text-center mb-6">
               <button 
                 onClick={() => setShowPreviousCluesModal(true)}
-                className="text-amber-400 hover:text-amber-300 underline text-sm font-medium transition-colors"
+                className="text-primary-400 hover:text-primary-300 underline text-sm font-medium transition-colors"
               >
                 👁️ Ver dicas anteriores ({currentClueIndex})
               </button>
@@ -233,7 +239,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                 onChange={(e) => setGuess(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') submitGuess(guess); }}
                 placeholder="Qual o evento?..."
-                className="flex-1 bg-slate-700 text-white rounded-xl p-4 outline-none focus:ring-2 focus:ring-amber-400 text-lg placeholder-slate-400 shadow-inner"
+                className="flex-1 bg-slate-700 text-white rounded-xl p-4 outline-none focus:ring-2 focus:ring-primary-400 text-lg placeholder-slate-400 shadow-inner"
               />
               {SpeechRecognition && (
                 <button 
@@ -278,7 +284,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
 
       {showConfirmModal && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-sm p-4">
-          <div className="bg-slate-800 p-6 rounded-2xl shadow-2xl w-full max-w-sm text-center border-2 border-amber-500">
+          <div className="bg-slate-800 p-6 rounded-2xl shadow-2xl w-full max-w-sm text-center border-2 border-primary-500">
             <span className="text-5xl mb-4 block">❓</span>
             <h2 className="text-xl font-bold text-white mb-6">Deseja realmente finalizar o jogo e ver o placar?</h2>
             <div className="flex gap-4">
@@ -293,7 +299,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                   setShowConfirmModal(false);
                   setGameState('result');
                 }}
-                className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold py-3 rounded-xl transition-all active:scale-95"
+                className="flex-1 bg-primary-500 hover:bg-primary-600 text-slate-900 font-bold py-3 rounded-xl transition-all active:scale-95"
               >
                 Sim, Finalizar
               </button>
@@ -309,7 +315,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
             <h2 className="text-lg font-bold text-white mb-6">{errorMessage}</h2>
             <button 
               onClick={() => setErrorMessage("")}
-              className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold py-3 rounded-xl transition-transform active:scale-95"
+              className="w-full bg-primary-500 hover:bg-primary-600 text-slate-900 font-bold py-3 rounded-xl transition-transform active:scale-95"
             >
               Entendi
             </button>
@@ -320,7 +326,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
       {showPreviousCluesModal && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-sm p-4">
           <div className="bg-slate-800 p-6 rounded-2xl shadow-2xl w-full max-w-md border-2 border-slate-600">
-            <h2 className="text-xl font-bold text-amber-400 mb-4 font-serif text-center border-b border-slate-700 pb-2">
+            <h2 className="text-xl font-bold text-primary-400 mb-4 font-serif text-center border-b border-slate-700 pb-2">
               Dicas Anteriores
             </h2>
             <div className="space-y-3 mb-6 max-h-60 overflow-y-auto custom-scrollbar pr-2">
@@ -354,7 +360,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                 <h2 className="text-2xl font-bold text-white mb-2">
                   A resposta era:
                 </h2>
-                <p className="text-4xl font-black text-amber-400 mb-6 font-serif leading-tight">
+                <p className="text-4xl font-black text-primary-400 mb-6 font-serif leading-tight">
                   {currentCard.answer}
                 </p>
                 <p className="text-green-400 font-bold mb-8 bg-green-900/30 p-3 rounded-lg inline-block border border-green-800">
@@ -377,7 +383,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
 
             <button 
               onClick={nextTurn}
-              className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold text-lg py-4 rounded-xl transition-transform active:scale-95 shadow-lg"
+              className="w-full bg-primary-500 hover:bg-primary-600 text-slate-900 font-bold text-lg py-4 rounded-xl transition-transform active:scale-95 shadow-lg"
             >
               Próximo Jogador
             </button>

@@ -7,6 +7,7 @@ import { miracles } from './miracles';
 import { promises } from './promises';
 import { events } from './events';
 import { objects } from './objects';
+import { moreCards } from './more_cards';
 
 export const cardDatabase: Card[] = [
   ...heroes,
@@ -16,5 +17,6 @@ export const cardDatabase: Card[] = [
   ...miracles,
   ...promises,
   ...events,
-  ...objects
+  ...objects,
+  ...moreCards
 ];

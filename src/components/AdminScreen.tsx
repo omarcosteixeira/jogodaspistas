@@ -51,31 +51,34 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onClose }) => {
 
   if (!isAuthenticated) {
     return (
-      <div className="bg-slate-800 p-8 rounded-2xl shadow-2xl w-full max-w-md border-2 border-primary-500">
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">Área Restrita</h2>
-        <form onSubmit={handleLogin} className="flex flex-col gap-4">
+      <div className="bg-slate-800/60 backdrop-blur-xl p-8 rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] w-full max-w-md border border-slate-700/50 relative overflow-hidden">
+        {/* Decorative background glow */}
+        <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+        <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary-300 to-primary-500 mb-8 text-center font-display tracking-tight relative z-10">Área Restrita</h2>
+        <form onSubmit={handleLogin} className="flex flex-col gap-5 relative z-10">
           <div>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Digite a senha"
-              className="w-full bg-slate-700 text-white border border-slate-600 rounded-lg p-4 outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-all text-center text-xl tracking-widest"
+              className="w-full bg-slate-900/50 text-white border border-slate-600 rounded-xl p-4 outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all text-center text-2xl tracking-[0.5em] shadow-inner placeholder-slate-500"
               autoFocus
             />
           </div>
-          {error && <p className="text-red-400 text-sm text-center">{error}</p>}
-          <div className="flex gap-3 mt-4">
+          {error && <p className="text-red-400 text-sm text-center bg-red-900/20 p-2 rounded-lg border border-red-500/30">{error}</p>}
+          <div className="flex gap-4 mt-4">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-slate-600 hover:bg-slate-500 text-white font-bold py-3 rounded-xl transition-all"
+              className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-4 rounded-xl transition-all border border-slate-500/30 active:scale-95"
             >
               Voltar
             </button>
             <button
               type="submit"
-              className="flex-1 bg-primary-500 hover:bg-primary-600 text-slate-900 font-bold py-3 rounded-xl transition-all"
+              className="flex-1 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-slate-900 font-bold py-4 rounded-xl transition-all shadow-lg shadow-primary-900/30 active:scale-95"
             >
               Entrar
             </button>
@@ -94,22 +97,25 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onClose }) => {
   ];
 
   return (
-    <div className="bg-slate-800 p-6 rounded-2xl shadow-2xl w-full max-w-md border-2 border-primary-500">
-      <div className="flex justify-between items-center mb-6 border-b border-slate-700 pb-4">
-        <h2 className="text-2xl font-bold text-primary-400">Configurações</h2>
-        <button onClick={onClose} className="text-slate-400 hover:text-white text-2xl">&times;</button>
+    <div className="bg-slate-800/60 backdrop-blur-xl p-8 rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] w-full max-w-md border border-slate-700/50 relative overflow-hidden">
+      {/* Decorative background glow */}
+      <div className="absolute -top-20 -left-20 w-40 h-40 bg-primary-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div className="flex justify-between items-center mb-8 border-b border-slate-700/50 pb-5 relative z-10">
+        <h2 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary-300 to-primary-500 font-display tracking-tight">Configurações</h2>
+        <button onClick={onClose} className="text-slate-400 hover:text-white text-3xl transition-colors">&times;</button>
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-8 relative z-10">
         {/* Theme Selection */}
-        <div>
-          <h3 className="text-lg font-medium text-white mb-3">Cor do Tema</h3>
-          <div className="grid grid-cols-5 gap-2">
+        <div className="bg-slate-900/40 p-5 rounded-2xl border border-slate-700/50 shadow-inner">
+          <h3 className="text-lg font-medium text-white mb-4">Cor do Tema</h3>
+          <div className="grid grid-cols-5 gap-3">
             {themes.map((t) => (
               <button
                 key={t.id}
                 onClick={() => handleThemeChange(t.id)}
-                className={`w-12 h-12 rounded-full ${t.color} flex items-center justify-center transition-transform ${currentTheme === t.id ? 'ring-4 ring-white scale-110' : 'hover:scale-105'}`}
+                className={`w-12 h-12 rounded-full ${t.color} flex items-center justify-center transition-all shadow-md ${currentTheme === t.id ? 'ring-4 ring-white scale-110 shadow-lg shadow-white/20' : 'hover:scale-110 hover:shadow-lg'}`}
                 title={t.name}
               />
             ))}
@@ -117,9 +123,9 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onClose }) => {
         </div>
 
         {/* Logo Upload */}
-        <div>
-          <h3 className="text-lg font-medium text-white mb-3">Logo Inicial</h3>
-          <div className="flex flex-col gap-3">
+        <div className="bg-slate-900/40 p-5 rounded-2xl border border-slate-700/50 shadow-inner">
+          <h3 className="text-lg font-medium text-white mb-4">Logo Inicial</h3>
+          <div className="flex flex-col gap-4">
             <input
               type="file"
               accept="image/*"
@@ -129,13 +135,13 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onClose }) => {
             />
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="w-full bg-slate-700 hover:bg-slate-600 text-white font-medium py-3 rounded-xl transition-all border border-slate-600 flex items-center justify-center gap-2"
+              className="w-full bg-slate-700 hover:bg-slate-600 text-white font-medium py-4 rounded-xl transition-all border border-slate-500/30 flex items-center justify-center gap-3 shadow-sm active:scale-95"
             >
-              <span>📁</span> Escolher Nova Imagem
+              <span className="text-xl">📁</span> Escolher Nova Imagem
             </button>
             <button
               onClick={handleResetLogo}
-              className="w-full bg-slate-800 hover:bg-slate-700 text-red-400 font-medium py-2 rounded-xl transition-all border border-red-900/50 text-sm"
+              className="w-full bg-slate-800 hover:bg-slate-700 text-red-400 font-medium py-3 rounded-xl transition-all border border-red-900/50 text-sm active:scale-95"
             >
               Restaurar Logo Padrão
             </button>
@@ -143,10 +149,10 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onClose }) => {
         </div>
       </div>
 
-      <div className="mt-8 pt-4 border-t border-slate-700">
+      <div className="mt-8 pt-6 border-t border-slate-700/50 relative z-10">
         <button
           onClick={onClose}
-          className="w-full bg-primary-500 hover:bg-primary-600 text-slate-900 font-bold py-3 rounded-xl transition-all"
+          className="w-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-slate-900 font-bold py-4 rounded-xl transition-all shadow-lg shadow-primary-900/30 active:scale-95 text-lg"
         >
           Salvar e Fechar
         </button>

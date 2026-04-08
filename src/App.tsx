@@ -225,6 +225,7 @@ export default function App() {
                 setGameState={setGameState} 
                 appLogo={appLogo}
                 disputaUser={disputaUser}
+                setDisputaUser={setDisputaUser}
               />
             </div>
           )}
@@ -316,20 +317,25 @@ export default function App() {
       )}
 
       {incomingChallenges.length > 0 && gameState !== 'playing' && (
-        <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
+        <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
           {incomingChallenges.map(challenge => (
-            <div key={challenge.id} className="bg-slate-800 border-2 border-red-500 p-4 rounded-xl shadow-2xl flex flex-col gap-2 max-w-sm animate-fade-in">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">⚔️</span>
-                <p className="text-white font-bold">Desafio Recebido!</p>
+            <div key={challenge.id} className="bg-slate-800/90 backdrop-blur-xl border border-red-500/50 p-5 rounded-2xl shadow-[0_10px_40px_rgba(239,68,68,0.3)] flex flex-col gap-3 w-80 animate-fade-in transform transition-all hover:scale-105">
+              <div className="flex items-center gap-3 border-b border-slate-700/50 pb-3">
+                <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center border border-red-500/30">
+                  <span className="text-xl">⚔️</span>
+                </div>
+                <div>
+                  <p className="text-white font-bold font-display tracking-wide">Desafio Recebido!</p>
+                  <p className="text-xs text-red-400 font-medium">Modo Disputa</p>
+                </div>
               </div>
-              <p className="text-slate-300 text-sm">
-                <strong className="text-primary-400">{challenge.challengerName}</strong> desafiou você!
+              <p className="text-slate-300 text-sm leading-relaxed">
+                <strong className="text-primary-400 font-bold text-base">{challenge.challengerName}</strong> desafiou você para uma partida!
               </p>
-              <div className="flex gap-2 mt-2">
+              <div className="flex gap-3 mt-2">
                 <button 
                   onClick={() => handleAcceptChallenge(challenge)}
-                  className="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-2 rounded-lg transition-transform active:scale-95 text-sm"
+                  className="flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-400 hover:to-red-500 text-white font-bold py-2.5 rounded-xl transition-all active:scale-95 text-sm shadow-lg shadow-red-900/30"
                 >
                   Aceitar
                 </button>
@@ -342,7 +348,7 @@ export default function App() {
                       await updateDoc(challengerRef, { stars: increment(6) });
                     }
                   }}
-                  className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 rounded-lg transition-transform active:scale-95 text-sm"
+                  className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-2.5 rounded-xl transition-all active:scale-95 text-sm border border-slate-500/30"
                 >
                   Recusar
                 </button>

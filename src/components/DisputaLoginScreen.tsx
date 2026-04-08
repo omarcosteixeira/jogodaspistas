@@ -172,68 +172,81 @@ export const DisputaLoginScreen: React.FC<DisputaLoginScreenProps> = ({
   };
 
   return (
-    <div className="bg-slate-800 p-8 rounded-2xl shadow-2xl w-full max-w-md border-2 border-primary-500 text-center">
-      <span className="text-5xl block mb-4">🏆</span>
-      <h2 className="text-2xl font-bold text-primary-400 mb-2 font-serif">Modo Disputa</h2>
-      <p className="text-slate-300 mb-6 text-sm">
+    <div className="bg-slate-800/60 backdrop-blur-xl p-8 rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] w-full max-w-md border border-slate-700/50 text-center relative overflow-hidden">
+      {/* Decorative background glow */}
+      <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+      <span className="text-6xl block mb-6 drop-shadow-lg">🏆</span>
+      <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary-300 to-primary-500 mb-3 font-display tracking-tight">Modo Disputa</h2>
+      <p className="text-slate-300 mb-8 text-sm font-medium leading-relaxed">
         Jogue sozinho, acumule pontos e suba no Ranking Global!
       </p>
 
       {step === 'username' && (
-        <form onSubmit={handleCheckUsername} className="flex flex-col gap-4">
+        <form onSubmit={handleCheckUsername} className="flex flex-col gap-4 relative z-10">
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Digite seu Nome ou Apelido"
-            className="w-full bg-slate-700 text-white border border-slate-600 rounded-lg p-4 outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-all text-center text-lg"
+            className="w-full bg-slate-900/50 text-white border border-slate-600 rounded-xl p-4 outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all text-center text-lg shadow-inner placeholder-slate-500"
             maxLength={20}
             required
             disabled={loading}
           />
-          {error && <p className="text-red-400 text-sm">{error}</p>}
+          {error && <p className="text-red-400 text-sm bg-red-900/20 p-2 rounded-lg border border-red-500/30">{error}</p>}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary-500 hover:bg-primary-600 text-slate-900 font-bold py-3 rounded-xl transition-transform active:scale-95 disabled:opacity-50"
+            className="w-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-slate-900 font-bold py-4 rounded-xl transition-all active:scale-95 disabled:opacity-50 shadow-lg shadow-primary-900/30 mt-2 flex items-center justify-center gap-2"
           >
-            {loading ? 'Carregando...' : 'Continuar'}
+            {loading ? (
+              <>
+                <span className="w-5 h-5 border-2 border-slate-900/30 border-t-slate-900 rounded-full animate-spin inline-block"></span>
+                Carregando...
+              </>
+            ) : 'Continuar'}
           </button>
         </form>
       )}
 
       {step === 'password' && (
-        <form onSubmit={handleLogin} className="flex flex-col gap-4">
-          <p className="text-white">Bem-vindo de volta, <strong className="text-primary-400">{username}</strong>!</p>
+        <form onSubmit={handleLogin} className="flex flex-col gap-4 relative z-10">
+          <p className="text-white mb-2">Bem-vindo de volta, <strong className="text-primary-400 text-lg">{username}</strong>!</p>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Digite sua Senha (6 dígitos)"
-            className="w-full bg-slate-700 text-white border border-slate-600 rounded-lg p-4 outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-all text-center text-xl tracking-widest"
+            className="w-full bg-slate-900/50 text-white border border-slate-600 rounded-xl p-4 outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all text-center text-2xl tracking-[0.5em] shadow-inner placeholder-slate-500"
             maxLength={6}
             required
             disabled={loading}
           />
-          {error && <p className="text-red-400 text-sm">{error}</p>}
+          {error && <p className="text-red-400 text-sm bg-red-900/20 p-2 rounded-lg border border-red-500/30">{error}</p>}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary-500 hover:bg-primary-600 text-slate-900 font-bold py-3 rounded-xl transition-transform active:scale-95 disabled:opacity-50"
+            className="w-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-slate-900 font-bold py-4 rounded-xl transition-all active:scale-95 disabled:opacity-50 shadow-lg shadow-primary-900/30 mt-2 flex items-center justify-center gap-2"
           >
-            {loading ? 'Entrando...' : 'Entrar e Jogar'}
+            {loading ? (
+              <>
+                <span className="w-5 h-5 border-2 border-slate-900/30 border-t-slate-900 rounded-full animate-spin inline-block"></span>
+                Entrando...
+              </>
+            ) : 'Entrar e Jogar'}
           </button>
         </form>
       )}
 
       {step === 'cooldown' && (
-        <div className="flex flex-col gap-4 animate-fade-in">
-          <div className="bg-orange-900/30 border border-orange-500/50 p-4 rounded-xl">
-            <p className="text-orange-400 font-bold mb-2">Aguarde um momento!</p>
-            <p className="text-slate-300 text-sm mb-4">
+        <div className="flex flex-col gap-4 animate-fade-in relative z-10">
+          <div className="bg-orange-900/20 backdrop-blur-md border border-orange-500/30 p-6 rounded-2xl shadow-inner">
+            <p className="text-orange-400 font-bold mb-2 text-lg">Aguarde um momento!</p>
+            <p className="text-slate-300 text-sm mb-5 leading-relaxed">
               Você precisa esperar o tempo de recarga para jogar novamente no Modo Disputa.
             </p>
-            <div className="text-2xl font-mono font-bold text-white tracking-widest bg-slate-900 py-3 rounded-lg">
+            <div className="text-3xl font-mono font-bold text-white tracking-widest bg-slate-950/50 py-4 rounded-xl border border-slate-700/50 shadow-inner">
               {cooldownRemaining}
             </div>
           </div>
@@ -258,14 +271,14 @@ export const DisputaLoginScreen: React.FC<DisputaLoginScreenProps> = ({
                 console.error(e);
               }
             }}
-            className="w-full bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-bold py-3 rounded-xl transition-transform active:scale-95 flex items-center justify-center gap-2"
+            className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-slate-900 font-bold py-4 rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2 shadow-lg shadow-yellow-900/30 mt-2"
           >
-            <span>⭐ Usar 1 Estrela (Reduzir para 30s)</span>
+            <span className="text-xl">⭐</span> Usar 1 Estrela (Reduzir para 30s)
           </button>
 
           <button
             onClick={() => setGameState('home')}
-            className="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-xl transition-transform active:scale-95"
+            className="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-4 rounded-xl transition-all active:scale-95 border border-slate-500/30"
           >
             Voltar ao Menu
           </button>
@@ -273,14 +286,14 @@ export const DisputaLoginScreen: React.FC<DisputaLoginScreenProps> = ({
       )}
 
       {step === 'profile' && (
-        <form onSubmit={handleCreateProfile} className="flex flex-col gap-4">
-          <p className="text-white text-sm mb-2">Olá <strong className="text-primary-400">{username}</strong>! Parece que você é novo por aqui. Preencha seus dados para criar seu perfil.</p>
+        <form onSubmit={handleCreateProfile} className="flex flex-col gap-4 relative z-10">
+          <p className="text-white text-sm mb-4 leading-relaxed">Olá <strong className="text-primary-400 text-base">{username}</strong>! Parece que você é novo por aqui. Preencha seus dados para criar seu perfil.</p>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Seu E-mail (opcional)"
-            className="w-full bg-slate-700 text-white border border-slate-600 rounded-lg p-4 outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-all text-center"
+            className="w-full bg-slate-900/50 text-white border border-slate-600 rounded-xl p-4 outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all text-center shadow-inner placeholder-slate-500"
             disabled={loading}
           />
           <input
@@ -288,44 +301,49 @@ export const DisputaLoginScreen: React.FC<DisputaLoginScreenProps> = ({
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="Seu Telefone (opcional)"
-            className="w-full bg-slate-700 text-white border border-slate-600 rounded-lg p-4 outline-none focus:border-primary-400 focus:ring-1 focus:ring-primary-400 transition-all text-center"
+            className="w-full bg-slate-900/50 text-white border border-slate-600 rounded-xl p-4 outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all text-center shadow-inner placeholder-slate-500"
             disabled={loading}
           />
-          {error && <p className="text-red-400 text-sm">{error}</p>}
+          {error && <p className="text-red-400 text-sm bg-red-900/20 p-2 rounded-lg border border-red-500/30">{error}</p>}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary-500 hover:bg-primary-600 text-slate-900 font-bold py-3 rounded-xl transition-transform active:scale-95 disabled:opacity-50"
+            className="w-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-slate-900 font-bold py-4 rounded-xl transition-all active:scale-95 disabled:opacity-50 shadow-lg shadow-primary-900/30 mt-2 flex items-center justify-center gap-2"
           >
-            {loading ? 'Criando...' : 'Criar Conta'}
+            {loading ? (
+              <>
+                <span className="w-5 h-5 border-2 border-slate-900/30 border-t-slate-900 rounded-full animate-spin inline-block"></span>
+                Criando...
+              </>
+            ) : 'Criar Conta'}
           </button>
         </form>
       )}
 
       {step === 'new_user' && (
-        <div className="flex flex-col gap-4 animate-fade-in">
-          <div className="bg-green-900/30 border border-green-500/50 p-4 rounded-xl">
-            <p className="text-green-400 font-bold mb-2">Conta criada com sucesso!</p>
-            <p className="text-slate-300 text-sm mb-4">
+        <div className="flex flex-col gap-4 animate-fade-in relative z-10">
+          <div className="bg-green-900/20 backdrop-blur-md border border-green-500/30 p-6 rounded-2xl shadow-inner">
+            <p className="text-green-400 font-bold mb-3 text-lg">Conta criada com sucesso!</p>
+            <p className="text-slate-300 text-sm mb-5 leading-relaxed">
               Guarde esta senha. Você precisará dela para voltar e continuar acumulando pontos:
             </p>
-            <div className="text-4xl font-mono font-bold text-white tracking-widest bg-slate-900 py-3 rounded-lg">
+            <div className="text-4xl font-mono font-bold text-white tracking-[0.2em] bg-slate-950/50 py-4 rounded-xl border border-slate-700/50 shadow-inner">
               {generatedPassword}
             </div>
           </div>
           <button
             onClick={startGameDisputa}
-            className="w-full bg-primary-500 hover:bg-primary-600 text-slate-900 font-bold py-3 rounded-xl transition-transform active:scale-95"
+            className="w-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-slate-900 font-bold py-4 rounded-xl transition-all active:scale-95 shadow-lg shadow-primary-900/30 mt-2"
           >
             Começar a Jogar!
           </button>
         </div>
       )}
 
-      <div className="mt-6 pt-4 border-t border-slate-700">
+      <div className="mt-8 pt-6 border-t border-slate-700/50 relative z-10">
         <button
           onClick={() => setGameState('setup')}
-          className="text-slate-400 hover:text-white text-sm transition-colors"
+          className="text-slate-400 hover:text-white text-sm transition-colors font-medium"
           disabled={loading}
         >
           Voltar para o Menu Principal

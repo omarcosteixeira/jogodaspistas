@@ -174,48 +174,51 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   if (!currentCard) return null;
 
   return (
-    <>
-      <header className="bg-slate-800 p-4 shadow-md flex justify-between items-center w-full">
+    <div className="min-h-screen bg-slate-900 text-white flex flex-col relative w-full overflow-hidden">
+      {/* Decorative background glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+      <header className="bg-slate-900/80 backdrop-blur-md border-b border-slate-700/50 p-4 shadow-sm flex justify-between items-center w-full sticky top-0 z-20">
         <div className="flex items-center gap-3">
           <img 
             src={appLogo} 
             alt="Logo Mini" 
-            className="w-12 h-12 rounded-full object-cover border-2 border-primary-500/50"
+            className="w-12 h-12 rounded-full object-cover border-2 border-primary-500/50 shadow-md"
           />
           <div>
-            <h1 className="text-lg font-bold text-primary-400 font-serif">Jogo das Pistas</h1>
-            <p className="text-xs text-slate-400">Rodada {currentRound} de {totalRounds}</p>
+            <h1 className="text-lg font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary-300 to-primary-500 font-display tracking-tight">Jogo das Pistas</h1>
+            <p className="text-xs text-slate-400 font-medium">Rodada {currentRound} de {totalRounds}</p>
           </div>
         </div>
-        <div className="text-right">
-          <p className="text-sm text-slate-300">Jogando agora:</p>
+        <div className="text-right bg-slate-800/50 px-4 py-1.5 rounded-xl border border-slate-700/50">
+          <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Jogando agora</p>
           <p className="font-bold text-primary-400 text-lg truncate max-w-[120px]">{currentPlayer?.name}</p>
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center p-4 w-full">
-        <div className="bg-slate-800 rounded-2xl shadow-xl w-full max-w-md p-6 relative border-t-4 border-primary-500">
+      <main className="flex-1 flex flex-col items-center justify-center p-4 w-full relative z-10">
+        <div className="bg-slate-800/60 backdrop-blur-xl rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] w-full max-w-md p-6 md:p-8 relative border border-slate-700/50">
           
           <div className="flex justify-between items-start mb-6">
             <div>
-              <span className="inline-block bg-slate-700 text-slate-300 text-xs px-2 py-1 rounded-md uppercase tracking-wider font-bold">
+              <span className="inline-block bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs px-3 py-1.5 rounded-lg uppercase tracking-wider font-bold shadow-sm">
                 {currentCard.category}
               </span>
-              <p className="text-slate-400 text-sm mt-1">Dica {currentClueIndex + 1} de 5</p>
+              <p className="text-slate-400 text-sm mt-2 font-medium">Dica {currentClueIndex + 1} de 5</p>
             </div>
-            <div className={`flex items-center justify-center w-14 h-14 rounded-full border-4 ${timeLeft <= 5 ? 'border-red-500 text-red-500 animate-pulse' : 'border-primary-500 text-primary-500'}`}>
-              <span className="text-xl font-bold font-mono">{timeLeft}</span>
+            <div className={`flex items-center justify-center w-16 h-16 rounded-full border-4 shadow-lg bg-slate-900/50 backdrop-blur-sm ${timeLeft <= 5 ? 'border-red-500 text-red-500 animate-pulse shadow-red-500/20' : 'border-primary-500 text-primary-400 shadow-primary-500/20'}`}>
+              <span className="text-2xl font-bold font-mono">{timeLeft}</span>
             </div>
           </div>
 
-          <div className="min-h-[120px] flex items-center justify-center mb-6 bg-slate-700/50 p-4 rounded-xl border border-slate-600">
-            <p className="text-center text-xl font-medium leading-relaxed">
+          <div className="min-h-[140px] flex items-center justify-center mb-6 bg-slate-900/40 p-6 rounded-2xl border border-slate-700/50 shadow-inner">
+            <p className="text-center text-xl md:text-2xl font-medium leading-relaxed text-slate-100">
               "{currentCard.clues[currentClueIndex]}"
             </p>
           </div>
 
-          <div className="text-center mb-4">
-            <p className="text-sm text-slate-400">
+          <div className="text-center mb-5">
+            <p className="text-sm text-slate-400 bg-slate-900/30 inline-block px-4 py-1.5 rounded-full border border-slate-700/30">
               Valor desta pista: <span className="font-bold text-primary-400">{pointsArray[currentClueIndex]} pontos</span>
             </p>
           </div>
@@ -224,9 +227,9 @@ export const GameScreen: React.FC<GameScreenProps> = ({
             <div className="text-center mb-6">
               <button 
                 onClick={() => setShowPreviousCluesModal(true)}
-                className="text-primary-400 hover:text-primary-300 underline text-sm font-medium transition-colors"
+                className="text-indigo-400 hover:text-indigo-300 text-sm font-semibold transition-colors flex items-center justify-center gap-2 mx-auto bg-indigo-500/10 hover:bg-indigo-500/20 px-4 py-2 rounded-xl border border-indigo-500/20"
               >
-                👁️ Ver dicas anteriores ({currentClueIndex})
+                <span>👁️</span> Ver dicas anteriores ({currentClueIndex})
               </button>
             </div>
           )}
@@ -239,12 +242,12 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                 onChange={(e) => setGuess(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') submitGuess(guess); }}
                 placeholder="Qual o evento?..."
-                className="flex-1 bg-slate-700 text-white rounded-xl p-4 outline-none focus:ring-2 focus:ring-primary-400 text-lg placeholder-slate-400 shadow-inner"
+                className="flex-1 bg-slate-900/50 text-white rounded-2xl p-4 outline-none border border-slate-600 focus:border-primary-500 focus:ring-1 focus:ring-primary-500 text-lg placeholder-slate-500 shadow-inner transition-all"
               />
               {SpeechRecognition && (
                 <button 
                   onClick={toggleListening}
-                  className={`p-4 rounded-xl flex items-center justify-center transition-all shadow-md ${isListening ? 'bg-red-500 animate-pulse' : 'bg-slate-700 hover:bg-slate-600 border border-slate-600'}`}
+                  className={`p-4 rounded-2xl flex items-center justify-center transition-all shadow-md ${isListening ? 'bg-red-500 animate-pulse shadow-red-500/30' : 'bg-slate-700 hover:bg-slate-600 border border-slate-600 shadow-slate-900/50'}`}
                   title="Falar Resposta"
                 >
                   <span className="text-2xl">🎤</span>
@@ -255,16 +258,16 @@ export const GameScreen: React.FC<GameScreenProps> = ({
             <div className="grid grid-cols-2 gap-3 mt-2">
               <button 
                 onClick={() => handleSkip(false)}
-                className="bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-xl transition-all active:scale-95 flex flex-col items-center justify-center border border-slate-600"
+                className="bg-slate-700/80 hover:bg-slate-600 text-white font-bold py-4 rounded-2xl transition-all active:scale-95 flex flex-col items-center justify-center border border-slate-500/30 shadow-sm"
               >
-                <span className="text-xl mb-1">⏭️</span>
+                <span className="text-2xl mb-1">⏭️</span>
                 {currentClueIndex < 4 ? "Pular Dica" : "Desistir"}
               </button>
               <button 
                 onClick={() => submitGuess(guess)}
-                className="bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-xl transition-all active:scale-95 flex flex-col items-center justify-center shadow-lg shadow-green-900/50"
+                className="bg-gradient-to-br from-green-500 to-green-700 hover:from-green-400 hover:to-green-600 text-white font-bold py-4 rounded-2xl transition-all active:scale-95 flex flex-col items-center justify-center shadow-lg shadow-green-900/40 border border-green-400/30"
               >
-                <span className="text-xl mb-1">✅</span>
+                <span className="text-2xl mb-1">✅</span>
                 Responder
               </button>
             </div>
@@ -283,14 +286,14 @@ export const GameScreen: React.FC<GameScreenProps> = ({
       </main>
 
       {showConfirmModal && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-sm p-4">
-          <div className="bg-slate-800 p-6 rounded-2xl shadow-2xl w-full max-w-sm text-center border-2 border-primary-500">
-            <span className="text-5xl mb-4 block">❓</span>
-            <h2 className="text-xl font-bold text-white mb-6">Deseja realmente finalizar o jogo e ver o placar?</h2>
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 animate-fade-in">
+          <div className="bg-slate-800/90 backdrop-blur-xl p-8 rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.5)] w-full max-w-sm text-center border border-slate-600/50 transform transition-all scale-100">
+            <span className="text-6xl mb-4 block drop-shadow-lg">❓</span>
+            <h2 className="text-2xl font-bold text-white mb-8 font-display">Deseja realmente finalizar o jogo e ver o placar?</h2>
             <div className="flex gap-4">
               <button 
                 onClick={() => setShowConfirmModal(false)}
-                className="flex-1 bg-slate-600 hover:bg-slate-500 text-white font-bold py-3 rounded-xl transition-all active:scale-95"
+                className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-4 rounded-xl transition-all active:scale-95 border border-slate-500/30"
               >
                 Não, Voltar
               </button>
@@ -299,7 +302,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
                   setShowConfirmModal(false);
                   setGameState('result');
                 }}
-                className="flex-1 bg-primary-500 hover:bg-primary-600 text-slate-900 font-bold py-3 rounded-xl transition-all active:scale-95"
+                className="flex-1 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-slate-900 font-bold py-4 rounded-xl transition-all active:scale-95 shadow-lg shadow-primary-900/30"
               >
                 Sim, Finalizar
               </button>
@@ -309,13 +312,13 @@ export const GameScreen: React.FC<GameScreenProps> = ({
       )}
 
       {errorMessage && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-sm p-4">
-          <div className="bg-slate-800 p-6 rounded-2xl shadow-xl w-full max-w-sm text-center border-2 border-red-500">
-            <span className="text-4xl mb-4 block">⚠️</span>
-            <h2 className="text-lg font-bold text-white mb-6">{errorMessage}</h2>
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 animate-fade-in">
+          <div className="bg-slate-800/90 backdrop-blur-xl p-8 rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.5)] w-full max-w-sm text-center border border-red-500/50 transform transition-all scale-100">
+            <span className="text-5xl mb-4 block drop-shadow-lg">⚠️</span>
+            <h2 className="text-xl font-bold text-white mb-8">{errorMessage}</h2>
             <button 
               onClick={() => setErrorMessage("")}
-              className="w-full bg-primary-500 hover:bg-primary-600 text-slate-900 font-bold py-3 rounded-xl transition-transform active:scale-95"
+              className="w-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-slate-900 font-bold py-4 rounded-xl transition-transform active:scale-95 shadow-lg shadow-primary-900/30"
             >
               Entendi
             </button>
@@ -324,22 +327,22 @@ export const GameScreen: React.FC<GameScreenProps> = ({
       )}
 
       {showPreviousCluesModal && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-sm p-4">
-          <div className="bg-slate-800 p-6 rounded-2xl shadow-2xl w-full max-w-md border-2 border-slate-600">
-            <h2 className="text-xl font-bold text-primary-400 mb-4 font-serif text-center border-b border-slate-700 pb-2">
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 animate-fade-in">
+          <div className="bg-slate-800/90 backdrop-blur-xl p-6 rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.5)] w-full max-w-md border border-slate-600/50 transform transition-all scale-100">
+            <h2 className="text-2xl font-bold text-primary-400 mb-6 font-display text-center border-b border-slate-700/50 pb-4">
               Dicas Anteriores
             </h2>
             <div className="space-y-3 mb-6 max-h-60 overflow-y-auto custom-scrollbar pr-2">
               {currentCard.clues.slice(0, currentClueIndex).map((clue, idx) => (
-                <div key={idx} className="bg-slate-700 p-3 rounded-lg border border-slate-600">
-                  <p className="text-xs text-slate-400 mb-1 font-bold">Dica {idx + 1} ({pointsArray[idx]} pts):</p>
-                  <p className="text-sm text-white italic">"{clue}"</p>
+                <div key={idx} className="bg-slate-900/50 p-4 rounded-xl border border-slate-700/50 shadow-inner">
+                  <p className="text-xs text-indigo-300 mb-1 font-bold uppercase tracking-wider">Dica {idx + 1} <span className="text-slate-500">({pointsArray[idx]} pts)</span></p>
+                  <p className="text-base text-slate-200 italic leading-relaxed">"{clue}"</p>
                 </div>
               ))}
             </div>
             <button 
               onClick={() => setShowPreviousCluesModal(false)}
-              className="w-full bg-slate-600 hover:bg-slate-500 text-white font-bold py-3 rounded-xl transition-all active:scale-95"
+              className="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-4 rounded-xl transition-all active:scale-95 border border-slate-500/30"
             >
               Fechar
             </button>
@@ -348,48 +351,52 @@ export const GameScreen: React.FC<GameScreenProps> = ({
       )}
 
       {showAnswerModal && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-sm p-4">
-          <div className={`bg-slate-800 p-8 rounded-2xl shadow-2xl w-full max-w-sm text-center border-2 ${lastAction === 'correct' ? 'border-green-500' : 'border-red-500'}`}>
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 animate-fade-in">
+          <div className={`bg-slate-800/90 backdrop-blur-xl p-8 rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.5)] w-full max-w-sm text-center border transform transition-all scale-100 ${lastAction === 'correct' ? 'border-green-500/50' : 'border-red-500/50'}`}>
             
-            <div className="text-6xl mb-4">
+            <div className="text-7xl mb-6 drop-shadow-lg">
               {lastAction === 'correct' ? '🎉' : '❌'}
             </div>
             
             {lastAction === 'correct' ? (
               <>
-                <h2 className="text-2xl font-bold text-white mb-2">
+                <h2 className="text-xl font-bold text-slate-300 mb-2">
                   A resposta era:
                 </h2>
-                <p className="text-4xl font-black text-primary-400 mb-6 font-serif leading-tight">
+                <p className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary-300 to-primary-500 mb-8 font-display leading-tight">
                   {currentCard.answer}
                 </p>
-                <p className="text-green-400 font-bold mb-8 bg-green-900/30 p-3 rounded-lg inline-block border border-green-800">
-                  +{pointsEarned} Pontos ganhos!
-                </p>
+                <div className="bg-green-900/20 border border-green-500/30 p-4 rounded-2xl inline-block mb-8 shadow-inner">
+                  <p className="text-green-400 font-bold text-lg">
+                    +{pointsEarned} Pontos ganhos!
+                  </p>
+                </div>
               </>
             ) : (
               <>
-                <h2 className="text-2xl font-bold text-white mb-2">
+                <h2 className="text-2xl font-bold text-white mb-3 font-display">
                   Você não pontuou!
                 </h2>
-                <p className="text-lg text-slate-300 mb-6">
+                <p className="text-base text-slate-400 mb-8 leading-relaxed">
                   A resposta permanecerá em segredo para não dar dicas aos adversários.
                 </p>
-                <p className="text-red-400 font-bold mb-8 bg-red-900/30 p-3 rounded-lg inline-block border border-red-800">
-                  Nenhum ponto nesta rodada.
-                </p>
+                <div className="bg-red-900/20 border border-red-500/30 p-4 rounded-2xl inline-block mb-8 shadow-inner">
+                  <p className="text-red-400 font-bold text-lg">
+                    Nenhum ponto nesta rodada.
+                  </p>
+                </div>
               </>
             )}
 
             <button 
               onClick={nextTurn}
-              className="w-full bg-primary-500 hover:bg-primary-600 text-slate-900 font-bold text-lg py-4 rounded-xl transition-transform active:scale-95 shadow-lg"
+              className="w-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-slate-900 font-bold text-lg py-4 rounded-xl transition-transform active:scale-95 shadow-lg shadow-primary-900/30"
             >
               Próximo Jogador
             </button>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };

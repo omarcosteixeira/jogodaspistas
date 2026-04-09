@@ -217,9 +217,9 @@ export const DisputaLoginScreen: React.FC<DisputaLoginScreenProps> = ({
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Digite sua Senha (6 dígitos)"
-            className="w-full bg-slate-900/50 text-white border border-slate-600 rounded-xl p-4 outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all text-center text-2xl tracking-[0.5em] shadow-inner placeholder-slate-500"
-            maxLength={6}
+            placeholder="Digite sua Senha"
+            className="w-full bg-slate-900/50 text-white border border-slate-600 rounded-xl p-4 outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all text-center text-2xl tracking-widest shadow-inner placeholder-slate-500"
+            maxLength={20}
             required
             disabled={loading}
           />

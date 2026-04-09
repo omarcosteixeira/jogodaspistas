@@ -14,6 +14,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ setGameState, appLogo, d
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [editEmail, setEditEmail] = useState(disputaUser?.email || '');
   const [editPhone, setEditPhone] = useState(disputaUser?.phone || '');
+  const [editPassword, setEditPassword] = useState('');
   const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [profileMessage, setProfileMessage] = useState('');
 
@@ -33,10 +34,16 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ setGameState, appLogo, d
     
     try {
       const docRef = doc(db, 'disputa_players', disputaUser.id);
-      await updateDoc(docRef, {
+      const updateData: any = {
         email: editEmail,
         phone: editPhone
-      });
+      };
+      
+      if (editPassword.trim()) {
+        updateData.password = editPassword.trim();
+      }
+
+      await updateDoc(docRef, updateData);
       
       setDisputaUser({
         ...disputaUser,
@@ -96,6 +103,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ setGameState, appLogo, d
                 onClick={() => {
                   setEditEmail(disputaUser.email || '');
                   setEditPhone(disputaUser.phone || '');
+                  setEditPassword('');
                   setShowProfileModal(true);
                 }}
                 className="flex-1 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white py-2 px-3 rounded-xl transition-all border border-slate-600 hover:border-slate-500 shadow-sm"
@@ -187,6 +195,18 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ setGameState, appLogo, d
                   placeholder="Seu Telefone"
                   className="w-full bg-slate-900/50 text-white border border-slate-600 rounded-xl p-3 outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all shadow-inner"
                   disabled={isSavingProfile}
+                />
+              </div>
+              <div className="text-left">
+                <label className="block text-slate-400 text-sm mb-1 ml-1">Nova Senha</label>
+                <input
+                  type="password"
+                  value={editPassword}
+                  onChange={(e) => setEditPassword(e.target.value)}
+                  placeholder="Deixe em branco para manter"
+                  className="w-full bg-slate-900/50 text-white border border-slate-600 rounded-xl p-3 outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all shadow-inner"
+                  disabled={isSavingProfile}
+                  maxLength={20}
                 />
               </div>
               

@@ -81,35 +81,38 @@ export const RankingScreen: React.FC<RankingScreenProps> = ({ setGameState, disp
             let textClass = 'text-white';
             
             if (i === 0) {
-              badge = '💎'; // Diamante
-              bgClass = 'bg-gradient-to-r from-cyan-900/40 to-blue-900/40 border-cyan-500/50 hover:from-cyan-800/50 hover:to-blue-800/50 hover:border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.15)]';
-              textClass = 'text-cyan-300';
-            } else if (i === 1) {
               badge = '🥇'; // Ouro
               bgClass = 'bg-gradient-to-r from-yellow-900/40 to-amber-900/40 border-yellow-500/50 hover:from-yellow-800/50 hover:to-amber-800/50 hover:border-yellow-400 shadow-[0_0_15px_rgba(234,179,8,0.15)]';
               textClass = 'text-yellow-300';
-            } else if (i === 2) {
+            } else if (i === 1) {
               badge = '🥈'; // Prata
               bgClass = 'bg-gradient-to-r from-slate-700/60 to-slate-800/60 border-slate-400/50 hover:from-slate-600/60 hover:to-slate-700/60 hover:border-slate-300 shadow-[0_0_15px_rgba(148,163,184,0.1)]';
               textClass = 'text-slate-200';
-            } else if (i <= 9) {
+            } else if (i === 2) {
               badge = '🥉'; // Bronze
               bgClass = 'bg-gradient-to-r from-orange-900/30 to-red-900/30 border-orange-700/40 hover:from-orange-800/30 hover:to-red-800/30 hover:border-orange-500';
               textClass = 'text-orange-300';
+            }
+
+            const isCurrentUser = disputaUser && p.id === disputaUser.id;
+            if (isCurrentUser) {
+              bgClass = 'bg-gradient-to-r from-indigo-900/60 to-purple-900/60 border-indigo-500/60 hover:from-indigo-800/60 hover:to-purple-800/60 hover:border-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.25)]';
+              if (i > 2) textClass = 'text-indigo-200 font-bold';
             }
 
             return (
               <div 
                 key={p.id} 
                 onClick={() => setSelectedPlayer(p)}
-                className={`flex justify-between items-center p-4 rounded-2xl border cursor-pointer transition-all duration-300 hover:-translate-y-1 ${bgClass}`}
+                className={`flex justify-between items-center p-4 rounded-2xl border cursor-pointer transition-all duration-300 hover:-translate-y-1 ${bgClass} ${isCurrentUser ? 'ring-2 ring-indigo-500/50' : ''}`}
               >
                 <div className="flex items-center gap-4">
                   <span className="text-2xl font-bold text-slate-500 w-8 text-center drop-shadow-sm">
                     {badge}
                   </span>
-                  <span className={`font-bold text-lg tracking-wide ${textClass}`}>
+                  <span className={`font-bold text-lg tracking-wide ${textClass} flex items-center gap-2`}>
                     {p.name}
+                    {isCurrentUser && <span className="text-xs bg-indigo-500/30 text-indigo-300 px-2 py-0.5 rounded-full border border-indigo-500/30">Você</span>}
                   </span>
                 </div>
                 <span className="font-mono text-primary-400 font-bold bg-slate-950/50 px-3 py-1.5 rounded-lg border border-slate-700/50 shadow-inner">
